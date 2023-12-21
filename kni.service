@@ -1,0 +1,4 @@
+[Service]
+Restart=always
+ExecStart=
+ExecStart=/usr/bin/server
