@@ -1,0 +1,21 @@
+version: "3"
+
+tasks:
+  init-repos:
+    cmds:
+      - ./scripts/init_repos.sh
+    env:
+      #uncomment if you want to pull whole repo (e.g. for development)
+      #GIT_OPTION: ""
+    aliases: [01-init]
+  build:
+    cmds:
+      - ./scripts/build.sh
+    aliases: [02-build]
+  setup:
+    cmds:
+      - ./scripts/setup.sh
+    aliases: [03-setup]
+  cleanup:
+    cmds:
+      - ./scripts/cleanup.sh
