@@ -2,6 +2,7 @@ version: "3"
 
 tasks:
   init-repos:
+    desc: Initialize required repos (i.e. src/)
     cmds:
       - ./scripts/init_repos.sh
     env:
@@ -9,13 +10,16 @@ tasks:
       #GIT_OPTION: ""
     aliases: [01-init]
   build:
+    desc: Build required components
     cmds:
       - ./scripts/build.sh
     aliases: [02-build]
   setup:
+    desc: Setup kind cluster and replace binaries
     cmds:
       - ./scripts/setup.sh
     aliases: [03-setup]
   cleanup:
+    desc: Cleanup kind cluster
     cmds:
       - ./scripts/cleanup.sh
