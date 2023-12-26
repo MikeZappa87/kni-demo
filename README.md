@@ -12,10 +12,10 @@
 ```
 $ git clone https://github.com/MikeZappa87/kni-demo
 $ cd kni-demo
-$ task 01-init
-$ task 02-build
-$ task 03-setup
+$ task 01-init 02-build 03-setup
 ```
+
+Note: '01-init' and '02-build' are only required initially.
 
 ## How to teardown
 
