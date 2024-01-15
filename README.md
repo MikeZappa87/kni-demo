@@ -1,13 +1,24 @@
 # kni-demo
 
+## Prerequisite
 
-mkdir -p bin
+- [kind](https://github.com/kubernetes-sigs/kind)
+- [Task](https://taskfile.dev/)
+- [golang](https://go.dev/)
 
-#containerd
-CGO_ENABLED=0 make binaries && cp ./bin/containerd ../bin/bin
 
-#kubelet
-CGO_ENABLED=0 make WHAT='cmd/kubelet' && cp ./_output/bin/kubelet ../bin/bin
+## How to Setup
 
-#kni server
-task build-server && cp ./bin/server ../bin/bin
+```
+$ git clone https://github.com/MikeZappa87/kni-demo
+$ cd kni-demo
+$ task 01-init 02-build 03-setup
+```
+
+Note: '01-init' and '02-build' are only required initially.
+
+## How to teardown
+
+```
+$ task cleanup
+```
