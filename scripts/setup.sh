@@ -8,8 +8,6 @@ kind create cluster --config kind.yaml --name test1
 
 kubectl cluster-info --context kind-test1
 
-kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=5m
-
 kubectl scale --replicas=0 -n kube-system deployment coredns
 kubectl scale --replicas=0 -n local-path-storage deployment local-path-provisioner
 kubectl -n kube-system wait --for=delete -l k8s-app=kube-dns pod --timeout=5m
@@ -21,6 +19,8 @@ for node in test1-control-plane test1-worker; do
 	docker cp ./bin/kubelet ${node}:/usr/bin/kubelet
 	docker cp ./files/kni.service ${node}:/etc/systemd/system/kni.service
 	docker cp ./files/config.toml ${node}:/etc/containerd/config.toml
+	docker cp ./bin/bridge ${node}:/opt/cni/bin/bridge
+	docker cp ./bin/host-local ${node}:/opt/cni/bin/host-local
 
 	docker exec ${node} systemctl daemon-reload
 	docker exec ${node} systemctl start kni
@@ -35,12 +35,12 @@ sleep 10
 kubectl scale --replicas=2 -n kube-system deployment coredns
 kubectl scale --replicas=1 -n local-path-storage deployment local-path-provisioner
 
-kubectl delete pods -n kube-system -l "k8s-app=kindnet"
-
 kubectl taint node test1-control-plane node-role.kubernetes.io/control-plane:NoSchedule-
 
 # wait for all k8s resources
 sleep 10
 kubectl wait --for=condition=Ready pods --all --all-namespaces --timeout=5m
+
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 kubectl get pods -A
