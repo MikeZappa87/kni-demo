@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # relative path from src to bin
 BINDIR="../../bin"
@@ -19,4 +19,6 @@ pushd kni-network-runtime
 task build-server && cp ./bin/network-runtime ${BINDIR}
 popd
 
+pushd plugins
+CGO_ENABLED=0 ./build_linux.sh && cp ./bin/bridge ${BINDIR} && cp ./bin/host-local ${BINDIR}
 popd
