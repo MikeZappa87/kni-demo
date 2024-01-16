@@ -26,6 +26,7 @@ for node in test1-control-plane test1-worker; do
 	docker exec ${node} systemctl start kni
 	docker exec ${node} systemctl restart kubelet
 	docker exec ${node} systemctl restart containerd
+	docker exec ${node} sysctl -w net.ipv6.conf.all.disable_ipv6=0
 done
 
 # wait for kubelet again...
