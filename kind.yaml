@@ -7,4 +7,6 @@ networking:
 
 nodes:
  - role: control-plane
+   image: gchr.io/mikezappa87/kni-demo:latest
  - role: worker
+   image: gchr.io/mikezappa87/kni-demo:latest

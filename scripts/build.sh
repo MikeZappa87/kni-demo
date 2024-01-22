@@ -22,3 +22,6 @@ popd
 pushd plugins
 CGO_ENABLED=0 ./build_linux.sh && cp ./bin/bridge ${BINDIR} && cp ./bin/host-local ${BINDIR}
 popd
+
+popd
+docker build -t gchr.io/mikezappa87/kni-demo:latest -f images/Dockerfile .
