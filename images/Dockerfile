@@ -24,14 +24,11 @@ ARG BASE_IMAGE=kindest/node@sha256:3966ac761ae0136263ffdb6cfd4db23ef8a83cba8a463
 FROM $BASE_IMAGE as base
 # overwrite
 ADD ./bin/containerd /usr/local/bin/containerd
-ADD ./bin/network-runtime /usr/bin/network-runtime
 ADD ./bin/kubelet /usr/bin/kubelet
 ADD ./bin/bridge /opt/cni/bin/bridge
 ADD ./bin/host-local /opt/cni/bin/host-local
-ADD ./files/kni.service /etc/systemd/system/kni.service
 ADD ./files/config.toml /etc/containerd/config.toml
 ADD ./files/10-ipv6.conf /etc/sysctl.d/10-ipv6.conf
-RUN systemctl enable kni.service
 
 # squash down to one compressed layer, without any lingering whiteout files etc
 FROM base

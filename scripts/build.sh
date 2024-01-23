@@ -16,7 +16,7 @@ CGO_ENABLED=0 make WHAT='cmd/kubelet' && cp ./_output/bin/kubelet ${BINDIR}
 popd
 
 pushd kni-network-runtime
-task build-server && cp ./bin/network-runtime ${BINDIR}
+docker build -t kni-network-runtime:latest -f Dockerfile .
 popd
 
 pushd plugins
