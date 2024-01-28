@@ -25,10 +25,9 @@ FROM $BASE_IMAGE as base
 # overwrite
 ADD ./bin/containerd /usr/local/bin/containerd
 ADD ./bin/kubelet /usr/bin/kubelet
-ADD ./bin/bridge /opt/cni/bin/bridge
-ADD ./bin/host-local /opt/cni/bin/host-local
 ADD ./files/config.toml /etc/containerd/config.toml
 ADD ./files/10-ipv6.conf /etc/sysctl.d/10-ipv6.conf
+RUN rm -fr /opt/cni && rm -fr /etc/cni
 
 # squash down to one compressed layer, without any lingering whiteout files etc
 FROM base

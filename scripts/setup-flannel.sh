@@ -7,13 +7,8 @@ kind delete cluster --name test1 || true
 kind create cluster --config kind.yaml --name test1
 kubectl cluster-info --context kind-test1
 
-kind load docker-image kni-network-runtime:latest --name test1
+kind load docker-image gchr.io/mikezappa87/flannel:KNI-POC --name test1
 
-kubectl apply -f ./runtime-ds.yaml
+kubectl apply -f https://raw.githubusercontent.com/MikeZappa87/flannel/kni-flannel-poc/Documentation/kube-flannel.yml
 
 kubectl taint node test1-control-plane node-role.kubernetes.io/control-plane:NoSchedule-
-# wait for all k8s resources
-sleep 10
-kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-
-kubectl get pods -A

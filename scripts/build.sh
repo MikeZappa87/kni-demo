@@ -15,12 +15,8 @@ pushd kubernetes
 CGO_ENABLED=0 make WHAT='cmd/kubelet' && cp ./_output/bin/kubelet ${BINDIR}
 popd
 
-pushd kni-network-runtime
-docker build -t kni-network-runtime:latest -f Dockerfile .
-popd
-
-pushd plugins
-CGO_ENABLED=0 ./build_linux.sh && cp ./bin/bridge ${BINDIR} && cp ./bin/host-local ${BINDIR}
+pushd flannel
+docker build -f images/Dockerfile --platform=amd64 --build-arg TAG=KNI-POC -t gchr.io/mikezappa87/flannel:KNI-POC .
 popd
 
 popd
