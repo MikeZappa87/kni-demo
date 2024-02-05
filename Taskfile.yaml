@@ -19,16 +19,6 @@ tasks:
     cmds:
       - ./scripts/setup-flannel.sh
     aliases: [03-setup]
-  setup-cilium:
-    desc: Setup kind cluster and replace binaries
-    cmds:
-      - ./scripts/setup-cilium.sh
-    aliases: [03-setup-cilium]
-  setup-self:
-    desc: Setup kind cluster and replace binaries
-    cmds:
-      - ./scripts/setup-self.sh
-    aliases: [03-setup-self]
   cleanup:
     desc: Cleanup kind cluster
     cmds:
