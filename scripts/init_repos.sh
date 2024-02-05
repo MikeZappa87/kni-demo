@@ -10,6 +10,5 @@ fi
 pushd src
 git clone -b poc/kni ${GIT_OPTION} https://github.com/MikeZappa87/kubernetes.git
 git clone -b feature/KNI-v2 ${GIT_OPTION} https://github.com/MikeZappa87/containerd.git
-git clone https://github.com/MikeZappa87/kni-network-runtime
-git clone https://github.com/containernetworking/plugins.git
+git clone -b kni-flannel-poc ${GIT_OPTION} https://github.com/MikeZappa87/flannel.git
 popd

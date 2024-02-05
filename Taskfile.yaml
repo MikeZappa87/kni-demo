@@ -5,7 +5,7 @@ tasks:
     desc: Initialize required repos (i.e. src/)
     cmds:
       - ./scripts/init_repos.sh
-    env:
+    #env:
       #uncomment if you want to pull whole repo (e.g. for development)
       #GIT_OPTION: ""
     aliases: [01-init]
@@ -17,9 +17,24 @@ tasks:
   setup:
     desc: Setup kind cluster and replace binaries
     cmds:
-      - ./scripts/setup.sh
+      - ./scripts/setup-flannel.sh
     aliases: [03-setup]
+  setup-cilium:
+    desc: Setup kind cluster and replace binaries
+    cmds:
+      - ./scripts/setup-cilium.sh
+    aliases: [03-setup-cilium]
+  setup-self:
+    desc: Setup kind cluster and replace binaries
+    cmds:
+      - ./scripts/setup-self.sh
+    aliases: [03-setup-self]
   cleanup:
     desc: Cleanup kind cluster
     cmds:
       - ./scripts/cleanup.sh
+  purge:
+    desc: Delete src and bin
+    cmds:
+      - rm -rf ./bin || true
+      - rm -rf ./src || true
