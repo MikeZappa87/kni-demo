@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: network-runtime
+  namespace: kube-system
+  labels:
+    k8s-app: network-runtime
+spec:
+  selector:
+    matchLabels:
+      name: network-runtime
+  template:
+    metadata:
+      labels:
+        name: network-runtime
+    spec:
+      hostNetwork: true
+      priorityClassName: system-node-critical
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      containers:
+        - name: network-runtime
+          image: kni-network-runtime:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          volumeMounts:
+          - mountPath: /run/netns
+            name: netns-volume
+            mountPropagation: Bidirectional
+          - mountPath: /etc/cni/net.d
+            name: cni-volume
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /opt/cni/bin
+            name: cni-binaries
+          - mountPath: /run/flannel
+            name: flannel
+      volumes:
+        - name: netns-volume
+          hostPath:
+            path: /run/netns
+            type: DirectoryOrCreate
+        - name: cni-volume
+          hostPath:
+            path: /etc/cni/net.d
+            type: DirectoryOrCreate
+        - name: cni-binaries
+          hostPath:
+            path: /opt/cni/bin
+            type: DirectoryOrCreate
+        - name: tmp
+          hostPath:
+            path: /tmp
+            type: Directory
+        - name: flannel
+          hostPath:
+            path: /run/flannel
+            type: DirectoryOrCreate
