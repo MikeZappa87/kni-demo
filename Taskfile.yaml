@@ -28,3 +28,6 @@ tasks:
     cmds:
       - rm -rf ./bin || true
       - rm -rf ./src || true
+  backwards:
+    cmds:
+      - ./scripts/setup-backwards.sh

@@ -1,6 +1,0 @@
-[Service]
-Restart=always
-ExecStart=
-ExecStart=/usr/bin/network-runtime
-[Install]
-WantedBy=multi-user.target
