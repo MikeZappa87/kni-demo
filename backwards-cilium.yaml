@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: network-runtime
+  namespace: kube-system
+  labels:
+    k8s-app: network-runtime
+spec:
+  selector:
+    matchLabels:
+      name: network-runtime
+  template:
+    metadata:
+      labels:
+        name: network-runtime
+    spec:
+      hostNetwork: true
+      priorityClassName: system-node-critical
+      tolerations:
+      - operator: Exists
+        effect: NoSchedule
+      containers:
+        - name: network-runtime
+          image: kni-network-runtime:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: true
+            capabilities:
+              add: ["NET_ADMIN"]
+          volumeMounts:
+          - mountPath: /run/netns
+            name: netns-volume
+            mountPropagation: Bidirectional
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /host/proc/sys/net
+            name: host-proc-sys-net
+          - mountPath: /host/proc/sys/kernel
+            name: host-proc-sys-kernel
+          - mountPath: /sys/fs/bpf
+            mountPropagation: HostToContainer
+            name: bpf-maps
+          - mountPath: /var/run/cilium
+            name: cilium-run
+          - mountPath: /etc/cni/net.d
+            name: etc-cni-netd
+          - mountPath: /var/lib/cilium/clustermesh
+            name: clustermesh-secrets
+            readOnly: true
+          - mountPath: /tmp/cilium/config-map
+            name: cilium-config-path
+            readOnly: true
+          - mountPath: /lib/modules
+            name: lib-modules
+            readOnly: true
+          - mountPath: /run/xtables.lock
+            name: xtables-lock
+          - name: cni-path
+            mountPath: /opt/cni/bin
+      volumes:
+        - name: netns-volume
+          hostPath:
+            path: /run/netns
+            type: DirectoryOrCreate
+        - hostPath:
+            path: /etc/systemd
+            type: DirectoryOrCreate
+          name: host-etc-systemd
+        - hostPath:
+            path: /lib/systemd
+            type: DirectoryOrCreate
+          name: host-lib-systemd
+        - hostPath:
+            path: /usr/lib
+            type: DirectoryOrCreate
+          name: host-usr-lib
+        - hostPath:
+            path: /var/run/cilium
+            type: DirectoryOrCreate
+          name: cilium-run
+        - hostPath:
+            path: /sys/fs/bpf
+            type: DirectoryOrCreate
+          name: bpf-maps
+        - hostPath:
+            path: /proc
+            type: Directory
+          name: hostproc
+        - hostPath:
+            path: /run/cilium/cgroupv2
+            type: DirectoryOrCreate
+          name: cilium-cgroup
+        - hostPath:
+            path: /opt/cni/bin
+            type: DirectoryOrCreate
+          name: cni-path
+        - hostPath:
+            path: /etc/cni/net.d
+            type: DirectoryOrCreate
+          name: etc-cni-netd
+        - hostPath:
+            path: /lib/modules
+            type: ""
+          name: lib-modules
+        - hostPath:
+            path: /run/xtables.lock
+            type: FileOrCreate
+          name: xtables-lock
+        - name: clustermesh-secrets
+          secret:
+            defaultMode: 256
+            optional: true
+            secretName: cilium-clustermesh
+        - configMap:
+            defaultMode: 420
+            name: cilium-config
+          name: cilium-config-path
+        - hostPath:
+            path: /proc/sys/net
+            type: Directory
+          name: host-proc-sys-net
+        - hostPath:
+            path: /proc/sys/kernel
+            type: Directory
+          name: host-proc-sys-kernel
+        - name: tmp
+          hostPath:
+            path: /tmp
+            type: Directory

@@ -19,6 +19,16 @@ tasks:
     cmds:
       - ./scripts/setup-flannel.sh
     aliases: [03-setup]
+  setup-backwards:
+    desc: Setup kind cluster and runs network-runtime/network plugins side by side
+    cmds:
+      - ./scripts/setup-backwards.sh
+    aliases: [03-setup-backwards]
+  setup-cilium:
+    desc: Setup kind cluster and runs network-runtime/cilium side by side
+    cmds:
+      - ./scripts/setup-cilium.sh
+    aliases: [03-setup-cilum]
   cleanup:
     desc: Cleanup kind cluster
     cmds:
