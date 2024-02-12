@@ -24,6 +24,11 @@ tasks:
     cmds:
       - ./scripts/setup-backwards.sh
     aliases: [03-setup-backwards]
+  setup-backwards-multus:
+    desc: Setup kind cluster and runs network-runtime/network plugins side by side
+    cmds:
+      - ./scripts/setup-backwards-multus.sh
+    aliases: [03-setup-backwards]
   setup-cilium:
     desc: Setup kind cluster and runs network-runtime/cilium side by side
     cmds:

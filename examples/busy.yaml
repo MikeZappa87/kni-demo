@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: busybox
   namespace: default
+  annotations:
+    k8s.v1.cni.cncf.io/networks: bridge-conf
 spec:
   containers:
   - image: busybox
